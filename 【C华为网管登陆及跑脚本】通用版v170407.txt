@@ -1,0 +1,1474 @@
+﻿
+Dim mm, City, SystemType, pn
+City = split(form1.ComboBox2.List, "|")(form1.ComboBox2.listindex)
+
+If Form1.CheckBox_admin.Value Then 
+    Select Case City
+    Case "广州"
+        If Form1.gz_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If 
+    Case "深圳"
+        If Form1.sz_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "东莞"
+        If Form1.dg_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "佛山"
+        If Form1.fs_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "中山"
+        If Form1.zs_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "惠州"
+        If Form1.hz_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "湛江"
+        If Form1.zj_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "茂名"
+        If Form1.mm_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If
+    Case "阳江"
+        If Form1.yj_admin_pw.text = "" Then 
+            MessageBox "admin密码为空，请输入密码"
+            EndScript
+        End If 
+    End Select 
+End If 
+
+If Form1.xp.Value Then 
+    SystemType = 0
+Elseif  Form1.xp2.Value then
+    SystemType = 1
+ElseIf Form1.win7_1440.Value Then
+    SystemType = 2
+ElseIf Form1.win7_1600.Value Then
+    SystemType = 3
+End If
+
+If Form1.inputbox_zh.Text = "" or Form1.inputbox_mm.Text = "" Then 
+    IsFile = Plugin.File.IsFileExist("D:\按键精灵专用\uservar.ini")
+    If IsFile Then 
+        密码 = Plugin.File.ReadINI("华为网管登陆", "密码", "D:\按键精灵专用\uservar.ini")
+        Dim 索引1,索引2
+        索引1 = Split(Form1.zhmm.List, "|")
+        索引2 = Split(密码,"|")   
+        Form1.inputbox_zh.Text = 索引1(Form1.zhmm.ListIndex)   
+        Form1.inputbox_mm.Text = 索引2(Form1.zhmm.ListIndex)
+    End If
+End If 
+
+If Form1.CheckBox_nadmin.Value Then
+    If Form1.inputbox_zh.Text = "" or Form1.inputbox_mm.Text = "" Then 
+        MessageBox "请设置好非Admin密码再运行"
+        EndScript 
+    End If
+End If 
+
+'------------------------BSC1_/BSC1.TXT--------------------------------  
+If Form1.CheckBox21.Value Then
+    Call script_identify(1) 
+End If
+'------------------------BSC1_/BSC1.TXT--------------------------------
+
+If Form1.IsVpnConnect.Value Then 
+    Call Vpn_Connect()
+End If
+
+Call ChooseBsc()
+Call Plugin.Msg.Tips("登陆完毕，谢谢使用")
+If Form1.CheckBox21.Value Then
+    RunApp cdx_path
+End If 
+
+Sub Vpn_Connect()
+    If Form1.vpn_psw.Text = "" Then 
+        MessageBox "请设置VPN密码"
+        EndScript 
+    Else 
+        FindCenterColor 1107,641,1440,900,"0000FF",intX,intY
+        If intX > 0 And intY > 0 Then 
+            MoveTo intx - 2, inty + 3
+            Delay 30
+            LeftDoubleClick 1
+            Delay 200
+            LeftDoubleClickH 1
+            Delay 200
+    
+            Do 
+                IfColor 620,356, "A65A09", 0 Then
+                    Exit Do     
+                End If
+                Delay 50
+            Loop
+        
+            SayString Form1.vpn_psw.Text
+            KeyPress "Enter", 1
+        
+            Do 
+                IfColor 596, 422, "008000", 0 Then
+                    Exit Do 
+                End If
+                Delay 50
+            Loop 
+        End If
+    End If
+End Sub 
+
+
+Sub ChooseBsc()
+    City = split(form1.ComboBox2.List, "|")(form1.ComboBox2.listindex)
+    Select Case City
+    Case "广州"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1 
+            Call LoginIn("h", -7, 1)            
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2
+            Call LoginIn("h", -7, 0)            
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("h",-8,3)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("h",-8,2)
+        End If
+        If Form1.CheckBox5.Value Then 'B5*
+            bscid = 5
+            Call LoginIn("h",-8,1)
+        End If
+        If Form1.CheckBox6.Value Then 'B6
+            bscid = 6
+            Call LoginIn("h",-8,0)
+        End If
+        If Form1.CheckBox7.Value Then 'B7
+            bscid = 7
+            Call LoginIn("h",-9,3)
+        End If
+        If Form1.CheckBox8.Value Then 'B8
+            bscid = 8
+            Call LoginIn("h",-9,2)
+        End If
+        If Form1.CheckBox9.Value Then 'B9*
+            bscid = 9
+            Call LoginIn("h",-9,1)
+        End If
+        If Form1.CheckBox10.Value Then 'B10
+            bscid = 10
+            Call LoginIn("h",-9,0)
+        End If
+        If Form1.CheckBox11.Value Then 'B11
+            bscid = 11
+            Call LoginIn("h",-10,3)
+        End If
+        If Form1.CheckBox12.Value Then 'B12
+            bscid = 12
+            Call LoginIn("h",-10,2)
+        End If
+        If Form1.CheckBox13.Value Then 'B13*
+            bscid = 13
+            Call LoginIn("h",-10,1)
+        End If
+        If Form1.CheckBox14.Value Then 'B14
+            bscid = 14
+            Call LoginIn("h",-10,0)
+        End If
+        If Form1.CheckBox15.Value Then 'B15
+            bscid = 15
+            Call LoginIn("h",-11,3)
+        End If
+        If Form1.CheckBox16.Value Then 'B16
+            bscid = 16
+            Call LoginIn("h",-11,2)
+        End If
+        If Form1.CheckBox17.Value Then 'B17*
+            bscid = 17
+            Call LoginIn("h",-11,1)
+        End If
+        If Form1.CheckBox18.Value Then 'B18
+            bscid = 18
+            Call LoginIn("h",-11,0)
+        End If
+        If Form1.CheckBox20.Value Then 'B20
+            bscid = 20
+            Call LoginIn("h",-7,2)
+        End If
+    Case "深圳"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1
+            Call LoginIn("e",10,2)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2*
+            bscid = 2
+            Call LoginIn("e",10,1)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("e",10,0)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("e",9,3)
+        End If
+        If Form1.CheckBox5.Value Then 'B5
+            bscid = 5
+            Call LoginIn("e",9,2)
+        End If
+        If Form1.CheckBox6.Value Then 'B6*
+            bscid = 6
+            Call LoginIn("e",9,1)
+        End If
+        If Form1.CheckBox7.Value Then 'B7
+            bscid = 7
+            Call LoginIn("e",9,0)
+        End If
+        If Form1.CheckBox8.Value Then 'B8
+            bscid = 8
+            Call LoginIn("e",8,3)
+        End If
+        If Form1.CheckBox9.Value Then 'B9
+            bscid = 9
+            Call LoginIn("e",8,2)
+        End If
+        If Form1.CheckBox10.Value Then 'B10*
+            bscid = 10
+            Call LoginIn("e",8,1)
+        End If
+        If Form1.CheckBox11.Value Then 'B11
+            bscid = 11
+            Call LoginIn("e",8,0)
+        End If
+        If Form1.CheckBox12.Value Then 'B12
+            bscid = 12
+            Call LoginIn("e",7,3)
+        End If
+        If Form1.CheckBox13.Value Then 'B13
+            bscid = 13
+            Call LoginIn("e",7,2)
+        End If
+        If Form1.CheckBox14.Value Then 'B14*
+            bscid = 14
+            Call LoginIn("e",7,1)
+        End If
+        If Form1.CheckBox15.Value Then 'B15
+            bscid = 15
+            Call LoginIn("e",7,0)
+        End If
+        If Form1.CheckBox16.Value Then 'B16
+            bscid = 16
+            Call LoginIn("e",6,3)
+        End If
+        If Form1.CheckBox17.Value Then 'B17
+            bscid = 17
+            Call LoginIn("e",6,2)
+        End If
+        If Form1.CheckBox18.Value Then 'B18*
+            bscid = 18
+            Call LoginIn("e",6,1)
+        End If
+        If Form1.CheckBox19.Value Then 'B19
+            bscid = 19
+            Call LoginIn("e",6,0)
+        End If    
+    Case "东莞"    
+        If Form1.CheckBox1.Value Then 'B1*
+            bscid = 1
+            Call LoginIn("e",5,3)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2 
+            Call LoginIn("e",5,2)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("e",5,1)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("e",5,0)
+        End If
+        If Form1.CheckBox5.Value Then 'B5*
+            bscid = 5
+            Call LoginIn("e",4,3)
+        End If
+        If Form1.CheckBox6.Value Then 'B6
+            bscid = 6
+            Call LoginIn("e",4,2)
+        End If
+        If Form1.CheckBox7.Value Then 'B7
+            bscid = 7
+            Call LoginIn("e",4,1)
+        End If
+        If Form1.CheckBox8.Value Then 'B8
+            bscid = 8
+            Call LoginIn("e",4,0)
+        End If
+        If Form1.CheckBox9.Value Then 'B9*
+            bscid = 9
+            Call LoginIn("e",3,3)
+        End If
+        If Form1.CheckBox10.Value Then 'B10
+            bscid = 10
+            Call LoginIn("e",3,2)
+        End If
+        If Form1.CheckBox11.Value Then 'B11
+            bscid = 11
+            Call LoginIn("e",3,1)
+        End If
+    Case "佛山"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1 
+            Call LoginIn("e",3,0)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2*
+            bscid = 2
+            Call LoginIn("e",2,3)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("e",2,2)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("e",2,1)
+        End If
+        If Form1.CheckBox5.Value Then 'B5
+            bscid = 5
+            Call LoginIn("e",2,0)
+        End If
+        If Form1.CheckBox6.Value Then 'B6*
+            bscid = 6
+            Call LoginIn("e",1,3)
+        End If
+        If Form1.CheckBox7.Value Then 'B7
+            bscid = 7
+            Call LoginIn("e",1,2)
+        End If
+        If Form1.CheckBox8.Value Then 'B8
+            bscid = 8
+            Call LoginIn("e",1,1)
+        End If
+        If Form1.CheckBox9.Value Then 'B9
+            bscid = 9
+            Call LoginIn("e",1,0)
+        End If
+    Case "中山"    
+        If Form1.CheckBox1.Value Then 'B1*
+            bscid = 1
+            Call LoginIn("e",0,3)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2
+            Call LoginIn("e",0,2)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("e",0,1)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("e",0,0)
+        End If
+        If Form1.CheckBox5.Value Then 'B5*
+            bscid = 5
+            Call LoginIn("h",-6,-1)
+        End If
+        If Form1.CheckBox6.Value Then 'B6
+            bscid = 6
+            Call LoginIn("h",-6,0)
+        End If
+        If Form1.CheckBox7.Value Then 'B7
+            bscid = 7
+            Call LoginIn("h",-6,1)
+        End If
+    Case "惠州"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1
+            Call LoginIn("h",-5,-2)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2*
+            bscid = 2
+            Call LoginIn("h",-5,-1)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("h",-5,0)
+        End If
+        If Form1.CheckBox4.Value Then 'B4
+            bscid = 4
+            Call LoginIn("h",-5,1)
+        End If
+        If Form1.CheckBox5.Value Then 'B5
+            bscid = 5
+            Call LoginIn("h",-5,2)
+        End If
+        If Form1.CheckBox6.Value Then 'B6*
+            bscid = 6
+            Call LoginIn("h",-5,3)
+        End If
+    Case "湛江"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1
+            Call LoginIn("h",-4,0)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2
+            Call LoginIn("h",-4,1)
+        End If
+        If Form1.CheckBox3.Value Then 'B3
+            bscid = 3
+            Call LoginIn("h",-4,2)
+        End If
+    Case "茂名"    
+        If Form1.CheckBox1.Value Then 'B1*
+            bscid = 1 
+            Call LoginIn("h",-3,-1)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2
+            Call LoginIn("h",-3,0)
+        End If
+    Case "阳江"    
+        If Form1.CheckBox1.Value Then 'B1
+            bscid = 1
+            Call LoginIn("h",-3,1)
+        End If    
+        If Form1.CheckBox2.Value Then 'B2
+            bscid = 2
+            Call LoginIn("h",-3,2)
+        End If    
+    End Select
+    
+    //    If Len(bscid) = 0 Then 
+    //        MessageBox "请选择BSC后再运行"
+    //        EndScript 
+    //    End If
+End Sub  
+    
+
+Sub LoginIn(he, pgupdwn, updwn)
+    RunApp Form1.exe_path.Path
+    Delay 50
+    '判断登陆界面的加载
+    Do  
+        IfColor 563,622, "D8E9EC", 0 Then'winxp
+            Exit Do
+        End If
+        
+        IfColor 878,465, "D8E9EC", 0 Then'winxp2
+            Exit Do
+        End If
+
+        IfColor 454, 407, "ABABAB", 0 Then'win7_1440
+            Exit Do
+        End If
+        
+        IfColor 454, 407, "ABABAB", 0 Then'win7_1600
+            Exit Do
+        End If
+    Loop
+    
+    Delay 200
+    //-------------------账号输入----------------------------  
+    If Form1.CheckBox_changepsw.Value Then 
+        //-----------------------改密码------------------------
+        //地市-BSCID-账号-旧密码-新密码
+        Dim str
+        For pn = 2 To 1000
+            str = Lib.文件.读取指定行文本内容(Form1.BrowseBox2.Path, pn)
+            TracePrint str
+            arr_psw = Split(str, "-")
+            If arr_psw(0) = City and arr_psw(1)\1 = bscid Then 
+                zh = arr_psw(2)
+                mm = arr_psw(3)
+                newpsw = arr_psw(4)
+                Exit For
+            End If
+        Next
+        TracePrint zh
+        Call Plugin.Sys.SetCLB(zh)
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+        //-----------------------改密码-------------------------
+    Else 
+        If Form1.CheckBox_nadmin.Value Then 
+            MsgBox 
+            Call Plugin.Sys.SetCLB(Form1.inputbox_zh.Text)
+            KeyDown 17, 1
+            KeyPress 86, 1
+            KeyUp 17, 1
+        Else 
+            If Form1.CheckBox_admin.Value Then 
+                Call Plugin.Sys.SetCLB("admin")
+                KeyDown 17, 1
+                KeyPress 86, 1
+                KeyUp 17, 1
+
+                If City = "深圳" Then 
+                    Call AssignmentAdminPsw(Form1.ckb_zero_sz.value, Form1.sz_admin_pw.Text, bscid)                   
+                ElseIf City = "广州" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_gz.value, Form1.gz_admin_pw.Text, bscid)                
+                ElseIf City = "东莞" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_dg.value, Form1.dg_admin_pw.Text, bscid)                
+                ElseIf City = "佛山" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_fs.value, Form1.fs_admin_pw.Text, bscid)
+                ElseIf City = "中山" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_zs.value, Form1.zs_admin_pw.Text, bscid)
+                ElseIf City = "惠州" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_hz.value, Form1.hz_admin_pw.Text, bscid)
+                ElseIf City = "湛江" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_zj.value, Form1.zj_admin_pw.Text, bscid)
+                ElseIf City = "茂名" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_mm.value, Form1.mm_admin_pw.Text, bscid)
+                ElseIf City = "阳江" Then
+                    Call AssignmentAdminPsw(Form1.ckb_zero_yj.value, Form1.yj_admin_pw.Text, bscid)
+                End If
+            End If
+ 
+        End If
+    End if 
+       
+    //-------------------账号输入----------------------------    
+    Delay 500
+    KeyPress "Tab", 1
+    Delay 500
+    //-------------------密码输入----------------------------  
+
+    If Form1.CheckBox_admin.Value Or Form1.CheckBox_changepsw.Value Then 
+        Call Plugin.Sys.SetCLB(mm)
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+    Else 
+        Call Plugin.Sys.SetCLB(Form1.inputbox_mm.Text)
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+    End If
+    //-------------------密码输入---------------------------- 
+    
+    Delay 100
+    KeyPress "Tab", 2
+    Delay 100
+    If he = "h" Then 
+        KeyPress "Home", 1 
+    ElseIf he = "e" Then
+        KeyPress "End", 1 
+    End If    
+    If pgupdwn > 0 Then 
+        KeyPress "PageUp", pgupdwn
+    ElseIf pgupdwn < 0 Then
+        KeyPress "PageDown", -pgupdwn
+    End If
+    If updwn > 0 Then 
+        KeyPress "Up", updwn
+    ElseIf updwn < 0 Then
+        KeyPress "Down", -updwn
+    End If
+    Delay 100
+
+    KeyPress "Enter", 1
+    Do 
+        IfColor 596,451,"FFFFFF",0 Then //登陆成功了,win7_1440，win7_1600
+            Exit Do
+        End If
+
+        //        IfColor 856,368, "FFFFFF", 0 Then'winxp，登陆成功关闭的中心
+        //            Exit Do
+        //        End If
+        //               
+        //        IfColor 838,368, "FFFFFF", 0 Then'winxp，登陆成功关闭的中心
+        //            Exit Do
+        //        End If  
+
+        FindColorEx 369, 157,1214, 758,"09FFFF",0,0.8,intX,intY'winxp，登陆成功关闭的中心
+        If intX > 0 And intY > 0 Then 
+            Exit Do
+        End If
+
+        Delay 100
+    Loop 
+    
+    KeyPress "Space", 1 '确定 
+    Delay 1000
+
+    If Form1.CheckBox_changepsw.Value Then 
+        Do 
+            IfColor 1342,316,"FFFFFF",0 Then//加载完成
+                Exit Do
+            End If
+            Delay 100
+        Loop 
+        call MoveAndLeftClick(42,31) //点击系统
+        Delay 800
+        Call MoveAndLeftClick(79, 76)//修改密码
+        Delay 500
+        Call Plugin.Sys.SetCLB(mm) //old password
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+        
+        Delay 200  
+        KeyPress "Tab",1
+        Call Plugin.Sys.SetCLB(newpsw)//new password
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+        
+        Delay 200
+        KeyPress "Tab", 1
+        Call Plugin.Sys.SetCLB(newpsw)//new password
+        KeyDown 17, 1
+        KeyPress 86, 1
+        KeyUp 17, 1
+        Call MoveAndLeftClick(645,516) //确定
+                 
+
+    ElseIf Form1.CheckBox21.Value=1 Then
+        Call SetTheRedirectScripts        
+    End If 
+
+    Delay 1000
+End Sub
+
+Sub AssignmentAdminPsw(zero_y, adm_pw, bsc_id)
+        
+    If zero_y Then   
+        If bscid < 10 Then                
+            mm = adm_pw & "0" & bsc_id
+        Else 
+            mm = adm_pw & bsc_id
+        End If 
+    Else 
+        mm = adm_pw & bsc_id
+    End If
+    If mm = "" Then 
+        MessageBox "admin密码为空，请设置"
+        EndScript 
+    End If
+	
+End Sub
+
+
+Sub SetTheRedirectScripts
+
+    Do 
+        IfColor 780,288, "FFFFFF", 0 Then '完全加载
+            Exit Do     
+        End If
+        Delay 10
+    Loop
+    Delay 500
+    If Form1.CheckBox_allrun.Value Then 
+        If Form1.CheckBox_scnomove.Value Then 
+            bat_path = 文件夹 & "\" & bat_name_one
+        Else
+            bat_path = cdx_path & "\" & bat_name_one
+        End If 
+        bat_cdx_path = cdx_path & "\" & Replace(bat_name_one,".txt","") & "_bsc" & bscid & " CDX.txt"	
+        bscid=""  
+    Else 
+        For i = 0 To bsc_ub
+            If bsc(i) = bscid Then 
+                bat_name = Replace(file_name(i), ".txt", "")
+                Exit For 
+            End If
+        Next  
+        bscid=""  
+        bat_path = cdx_path & "\" & bat_name & ".txt"    
+        bat_cdx_path = cdx_path & "\" & bat_name & " CDX.txt"	
+    End If
+   
+    KeyDown 17, 1
+    KeyPress 68, 1
+    KeyUp 17, 1'报告重定向ctrl+d
+    Delay 1000
+    Call Plugin.Sys.SetCLB(bat_cdx_path) '输入重定向
+    KeyDown 17, 1
+    KeyPress 86, 1
+    KeyUp 17, 1'ctrl+v
+    Delay 500
+    KeyPress "Enter", 1'保存
+    Delay 500
+    KeyDown 17, 1
+    KeyPress 82, 1
+    KeyUp 17, 1'ctrl+r
+    Delay 1000
+    '重定向文件路径选择
+    If SystemType =2 Then   '1为win7_1440  	
+        Call MoveAndLeftClick(892, 358)'点击...win7_1440------------------ 
+    Elseif SystemType =1 Then  
+        Call MoveAndLeftClick(975, 349)'点击...xp-liuqm------------------
+    ElseIf SystemType =0 Then 
+        Call MoveAndLeftClick(893, 347)'点击...xp2------------------  
+    ElseIf SystemType =3 Then 
+        Call MoveAndLeftClick(974,346)'点击...win7_1600------------------ 
+    End If    
+    
+    Call Plugin.Sys.SetCLB(bat_path) '输入脚本
+    KeyDown 17, 1
+    KeyPress 86, 1
+    KeyUp 17, 1'ctrl+v
+    Delay 300
+    KeyPress "Enter", 1'打开
+    Delay 500
+    If SystemType = 2 Then 
+        Call MoveAndLeftClick(731,566)'确定win7_1440------------------
+        Call MoveAndLeftClick(447,545)'取消执行错误停止运行win7_1440------------------
+        Call MoveAndLeftClick(477, 599)'执处理  win7_1440 ------------------   
+    ElseIf SystemType = 1 Then     	
+        Call MoveAndLeftClick(807,556)'确定xp--------liuqm----------                      
+        Call MoveAndLeftClick(527, 536)'取消执行错误停止运行xp------liuqm------------  
+        Call MoveAndLeftClick(553, 591)'执处理 xp --------liuqm----------
+    ElseIf SystemType = 0 Then    
+        Call MoveAndLeftClick(730, 556)'确定xp------------------  
+        Call MoveAndLeftClick(446, 534)'取消执行错误停止运行xp------------------ 
+        Call MoveAndLeftClick(477, 591)'执处理 xp ------------------   
+    ElseIf SystemType =3 Then    
+        Call MoveAndLeftClick(806,557)'确定xp------------------  
+        Call MoveAndLeftClick(578,534)'取消执行错误停止运行win7_1600------------------ 
+        Call MoveAndLeftClick(557,589)'执处理 xp ------------------  
+    End if
+End Sub  
+
+//Sub zt0(pic)
+//    Do 
+//        FindPic 0,0,sx,sy,"Attachment:\"&pic&".bmp",0.9,px,py
+//        If px > 0 And py > 0 Then 
+//            Delay 50
+//            Exit Do 
+//        End If
+//        Delay 50
+//    Loop    
+//End Sub
+
+
+Sub MoveAndLeftClick(x,y)
+    MoveTo x, y
+    Delay 30
+    LeftClick 1
+    Delay 500
+End Sub
+Sub MoveAndLeftDoubleClickH(x,y)
+    MoveTo x, y
+    Delay 30
+    LeftDoubleClickH 1
+    Delay 200
+End Sub
+Event Form1.allSelect.Click
+    Call AllChoose()
+End Event
+
+Sub AllChoose()
+    Form1.CheckBox1.Value=1
+    Form1.CheckBox2.Value=1
+    Form1.CheckBox3.Value=1
+    Form1.CheckBox4.Value=1
+    Form1.CheckBox5.Value=1
+    Form1.CheckBox6.Value=1
+    Form1.CheckBox7.Value=1
+    Form1.CheckBox8.Value=1
+    Form1.CheckBox9.Value=1
+    Form1.CheckBox10.Value=1
+    Form1.CheckBox11.Value=1
+    Form1.CheckBox12.Value=1
+    Form1.CheckBox13.Value=1
+    Form1.CheckBox14.Value=1
+    Form1.CheckBox15.Value=1
+    Form1.CheckBox16.Value=1
+    Form1.CheckBox17.Value=1
+    Form1.CheckBox18.Value=1
+    Form1.CheckBox19.Value=1
+    Form1.CheckBox20.Value = 1
+End Sub
+
+Event Form1.inselect.Click
+    Call ReverseChoose()
+End Event
+
+Sub ReverseChoose()
+    Form1.CheckBox1.Value=int(Form1.CheckBox1.Value+1) Mod 2
+    Form1.CheckBox2.Value=int(Form1.CheckBox2.Value+1) Mod 2
+    Form1.CheckBox3.Value=int(Form1.CheckBox3.Value+1) Mod 2
+    Form1.CheckBox4.Value=int(Form1.CheckBox4.Value+1) Mod 2
+    Form1.CheckBox5.Value=int(Form1.CheckBox5.Value+1) Mod 2
+    Form1.CheckBox6.Value=int(Form1.CheckBox6.Value+1) Mod 2
+    Form1.CheckBox7.Value=int(Form1.CheckBox7.Value+1) Mod 2
+    Form1.CheckBox8.Value=int(Form1.CheckBox8.Value+1) Mod 2
+    Form1.CheckBox9.Value=int(Form1.CheckBox9.Value+1) Mod 2
+    Form1.CheckBox10.Value=int(Form1.CheckBox10.Value+1) Mod 2
+    Form1.CheckBox11.Value=int(Form1.CheckBox11.Value+1) Mod 2
+    Form1.CheckBox12.Value=int(Form1.CheckBox12.Value+1) Mod 2
+    Form1.CheckBox13.Value=int(Form1.CheckBox13.Value+1) Mod 2
+    Form1.CheckBox14.Value=int(Form1.CheckBox14.Value+1) Mod 2
+    Form1.CheckBox15.Value=int(Form1.CheckBox15.Value+1) Mod 2
+    Form1.CheckBox16.Value=int(Form1.CheckBox16.Value+1) Mod 2
+    Form1.CheckBox17.Value=int(Form1.CheckBox17.Value+1) Mod 2
+    Form1.CheckBox18.Value=int(Form1.CheckBox18.Value+1) Mod 2
+    Form1.CheckBox19.Value=int(Form1.CheckBox19.Value+1) Mod 2
+    Form1.CheckBox20.Value=int(Form1.CheckBox20.Value+1) Mod 2
+End Sub
+
+Event Form1.ComboBox2.SelectChange
+    Call AllClear 
+    Call CityChange 
+End Event
+
+Sub CityChange
+    City = split(form1.ComboBox2.List, "|")(form1.ComboBox2.listindex)
+    Select Case City
+    Case "广州"
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible=True
+        Form1.CheckBox8.Visible=True
+        Form1.CheckBox9.Visible=True
+        Form1.CheckBox10.Visible=True
+        Form1.CheckBox11.Visible=True
+        Form1.CheckBox12.Visible=True
+        Form1.CheckBox13.Visible=True
+        Form1.CheckBox14.Visible=True
+        Form1.CheckBox15.Visible=True
+        Form1.CheckBox16.Visible=True
+        Form1.CheckBox17.Visible=True
+        Form1.CheckBox18.Visible=True
+        Form1.CheckBox20.Visible=True
+    Case "深圳"
+        Form1.CheckBox20.Visible = False
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible=True
+        Form1.CheckBox8.Visible=True
+        Form1.CheckBox9.Visible=True
+        Form1.CheckBox10.Visible=True
+        Form1.CheckBox11.Visible=True
+        Form1.CheckBox12.Visible=True
+        Form1.CheckBox13.Visible=True
+        Form1.CheckBox14.Visible=True
+        Form1.CheckBox15.Visible=True
+        Form1.CheckBox16.Visible=True
+        Form1.CheckBox17.Visible=True
+        Form1.CheckBox18.Visible=True
+        Form1.CheckBox19.Visible=True
+    Case "东莞"
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible=True
+        Form1.CheckBox8.Visible=True
+        Form1.CheckBox9.Visible=True
+        Form1.CheckBox10.Visible=True
+        Form1.CheckBox11.Visible=True
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "佛山"
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible=True
+        Form1.CheckBox8.Visible=True
+        Form1.CheckBox9.Visible=True
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "中山"
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible=True
+        Form1.CheckBox8.Visible = False
+        Form1.CheckBox9.Visible = False
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "惠州"
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible=True
+        Form1.CheckBox5.Visible=True
+        Form1.CheckBox6.Visible=True
+        Form1.CheckBox7.Visible = False
+        Form1.CheckBox8.Visible = False
+        Form1.CheckBox9.Visible = False
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "湛江"
+        Form1.CheckBox1.Visible=True
+        Form1.CheckBox2.Visible=True
+        Form1.CheckBox3.Visible=True
+        Form1.CheckBox4.Visible = False
+        Form1.CheckBox5.Visible = False
+        Form1.CheckBox6.Visible = False
+        Form1.CheckBox7.Visible = False
+        Form1.CheckBox8.Visible = False
+        Form1.CheckBox9.Visible = False
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "茂名"
+        Form1.CheckBox3.Visible = False
+        Form1.CheckBox4.Visible = False
+        Form1.CheckBox5.Visible = False
+        Form1.CheckBox6.Visible = False
+        Form1.CheckBox7.Visible = False
+        Form1.CheckBox8.Visible = False
+        Form1.CheckBox9.Visible = False
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    Case "阳江"
+        Form1.CheckBox3.Visible = False
+        Form1.CheckBox4.Visible = False
+        Form1.CheckBox5.Visible = False
+        Form1.CheckBox6.Visible = False
+        Form1.CheckBox7.Visible = False
+        Form1.CheckBox8.Visible = False
+        Form1.CheckBox9.Visible = False
+        Form1.CheckBox10.Visible = False
+        Form1.CheckBox11.Visible = False
+        Form1.CheckBox12.Visible = False
+        Form1.CheckBox13.Visible = False
+        Form1.CheckBox14.Visible = False
+        Form1.CheckBox15.Visible = False
+        Form1.CheckBox16.Visible = False
+        Form1.CheckBox17.Visible = False
+        Form1.CheckBox18.Visible = False
+        Form1.CheckBox19.Visible = False
+        Form1.CheckBox20.Visible = False
+    End Select
+End Sub
+
+Event Form1.allclean.Click
+    Call AllClear()
+End Event
+
+Sub AllClear()
+    Form1.CheckBox1.Value=0
+    Form1.CheckBox2.Value=0
+    Form1.CheckBox3.Value=0
+    Form1.CheckBox4.Value=0
+    Form1.CheckBox5.Value=0
+    Form1.CheckBox6.Value=0
+    Form1.CheckBox7.Value=0
+    Form1.CheckBox8.Value=0
+    Form1.CheckBox9.Value=0
+    Form1.CheckBox10.Value=0
+    Form1.CheckBox11.Value=0
+    Form1.CheckBox12.Value=0
+    Form1.CheckBox13.Value=0
+    Form1.CheckBox14.Value=0
+    Form1.CheckBox15.Value=0
+    Form1.CheckBox16.Value=0
+    Form1.CheckBox17.Value=0
+    Form1.CheckBox18.Value=0
+    Form1.CheckBox19.Value=0
+    Form1.CheckBox20.Value=0
+End Sub
+
+Event Form1.close.Click
+    Call RunApp("taskkill /f /im Frame.EXE")
+    Call RunApp("taskkill /f /im Frame2.EXE")
+End Event
+
+Event Form1.inputbox_zh.GotFocus
+    Form1.inputbox_zh.Text = ""
+    Form1.inputbox_mm.Text = ""
+End Event
+
+Event Form1.CheckBox21.Click
+    If Form1.CheckBox21.Value = 0 Then 
+        Form1.BrowseBox1.Enabled = False
+        Form1.CheckBox_changepsw.Value = 0
+        Form1.CheckBox_allrun.Value = 0
+    ElseIf Form1.CheckBox21.Value Then
+        Form1.BrowseBox1.Enabled = True
+    End If
+End Event
+
+Event Form1.LoadOver
+
+    If Lib.文件.判断文件夹是否存在("D:\按键精灵专用") = False Then 
+        Call Plugin.File.CreateFolder("D:\按键精灵专用")
+    End If
+    
+    IsFile = Plugin.File.IsFileExist("D:\按键精灵专用\uservar.ini")
+    If IsFile Then 
+        zhmml = Plugin.File.ReadINI("华为网管登陆", "账号", "D:\按键精灵专用\uservar.ini")
+        If zhmml <> "" Then 
+            Form1.zhmm.List = zhmml
+        Else 
+            MessageBox "未设置账号密码，请设置好非admin账号密码再运行"
+            EndScript
+        End If
+    Else 
+        MessageBox "未设置账号密码，请设置好非admin账号密码再运行"
+        EndScript
+    End If
+
+    Call CityChange
+    Form1.zhmm.ListIndex = 0
+    Form1.CheckBox21.Value = 0
+    Form1.CheckBox_allrun.Value = 0
+    Form1.CheckBox_scnomove.Value = 1    
+    Call AllClear()
+    
+End Event
+
+Event Form1.delzhmm.Click
+    账号 = Plugin.File.ReadINI("华为网管登陆", "账号", "D:\按键精灵专用\uservar.ini")
+    密码 = Plugin.File.ReadINI("华为网管登陆", "密码", "D:\按键精灵专用\uservar.ini")
+    arr_zh = split(账号, "|") : arr_mm = split(密码, "|")
+    n = UBound(arr_zh)
+    Redim new_zh(n), new_mm(n)
+    For i = 0 To n
+        If i < int(Form1.zhmm.ListIndex) Then 
+            new_zh(i) = arr_zh(i)
+            new_mm(i) = arr_mm(i)
+        ElseIf i > int(Form1.zhmm.ListIndex) Then 
+            new_zh(i - 1) = arr_zh(i)
+            new_mm(i-1) = arr_mm(i)
+        End If    	
+    Next
+    账号="":密码=""
+    For j = 0 To UBound(new_zh) - 1
+        账号 = 账号 & "|" & new_zh(j)
+        密码 = 密码 & "|" & new_mm(j)
+    Next
+    账号 = right(账号, len(账号) - 1)
+    密码 = right(密码, len(密码) - 1)
+    Call Plugin.File.WriteINI("华为网管登陆","账号",账号, "D:\按键精灵专用\uservar.ini") 
+    Call Plugin.File.WriteINI("华为网管登陆", "密码", 密码, "D:\按键精灵专用\uservar.ini")
+    Form1.zhmm.List = Plugin.File.ReadINI("华为网管登陆", "账号", "D:\按键精灵专用\uservar.ini")
+    Form1.zhmm.ListIndex = 0
+    Call Plugin.Msg.Tips("删除账号成功！") 
+End Event
+
+Event Form1.zhmm.SelectChange
+    密码 = Plugin.File.ReadINI("华为网管登陆", "密码", "D:\按键精灵专用\uservar.ini")
+    Dim 索引1,索引2
+    索引1 = Split(Form1.zhmm.List, "|")
+    索引2 = Split(密码,"|")   
+    Form1.inputbox_zh.Text = 索引1(Form1.zhmm.ListIndex)   
+    Form1.inputbox_mm.Text = 索引2(Form1.zhmm.ListIndex)
+End Event
+
+
+Event Form1.addzhmm.Click
+    账号 = Plugin.File.ReadINI("华为网管登陆", "账号", "D:\按键精灵专用\uservar.ini")
+    密码 = Plugin.File.ReadINI("华为网管登陆", "密码", "D:\按键精灵专用\uservar.ini")
+    If Form1.inputbox_zh.Text <> "" and Form1.inputbox_mm.Text <> "" Then 
+        If 账号 <> "" or 密码 <>"" Then 
+            Call Plugin.File.WriteINI("华为网管登陆","账号",账号&"|"&form1.inputbox_zh.text, "D:\按键精灵专用\uservar.ini")        
+            Call Plugin.File.WriteINI("华为网管登陆", "密码", 密码 & "|" & form1.inputbox_mm.text, "D:\按键精灵专用\uservar.ini")
+        Else 
+            Call Plugin.File.WriteINI("华为网管登陆","账号",form1.inputbox_zh.text, "D:\按键精灵专用\uservar.ini")        
+            Call Plugin.File.WriteINI("华为网管登陆", "密码", form1.inputbox_mm.text, "D:\按键精灵专用\uservar.ini")
+        End If              
+        账号 = Plugin.File.ReadINI("华为网管登陆", "账号","D:\按键精灵专用\uservar.ini")
+        Form1.zhmm.List = 账号
+        Form1.zhmm.ListIndex=0
+        Form1.inputbox_zh.Text = ""
+        Form1.inputbox_mm.Text = ""
+        Call Plugin.Msg.Tips("添加账号成功！") 
+    ElseIf Form1.inputbox_zh.Text = "" or Form1.inputbox_mm.Text = "" Then
+        MsgBox "请输入账号和密码！"
+        Form1.inputbox_zh.Text = ""
+        Form1.inputbox_mm.Text = ""     
+    End If 
+End Event
+Event Form1.Button1.Click
+    Form1.BrowseBox1.Path = Form1.download_path.Path
+    Form1.CheckBox21.Value = 1
+End Event
+Event Form1.Button_autosltbsc.Click
+    Call AllClear()
+    If Form1.CheckBox_changepsw.Value Then 
+        Call ChangeThePsw_ChooseBSC
+    Else 
+        If Form1.CheckBox_allrun.Value =0 Then
+            Call script_identify(0)
+        End If	
+    End If
+
+End Event
+
+Sub Script_Identify(zx_yx)
+    Dim bsc_txt(19),bsc_(19),b_txt(19),b_(19),bsc2_txt(19),bsc2_(19),b2_txt(19),b2_(19)
+    For i = 0 To 19
+        n=i+1
+        bsc_txt(i) = "BSC" & n & ".txt"    
+        bsc_(i) = "BSC" & n & "_"
+        b_txt(i) = "B" & n & ".txt"    
+        b_(i) = "B" & n & "_"
+        bsc2_txt(i) = "bsc" & n & ".txt"    
+        bsc2_(i) = "bsc" & n & "_"
+        b2_txt(i) = "b" & n & ".txt"    
+        b2_(i) = "b" & n & "_" 
+    Next
+
+    文件夹 = Form1.BrowseBox1.Path
+    TracePrint 文件夹
+    Set F = CreateObject("Scripting.FileSystemObject")
+    If Not F.FolderExists(文件夹) Then
+        MsgBox "未检测到文件夹"
+    End If
+    Set oF = F.GetFolder(文件夹)
+    
+    If Form1.CheckBox_allrun.Value =0 Then    
+        //---------------------------------------------------------------------------------    
+        ReDim file_name(19),bsc(19)
+        i=0
+        For Each a In oF.Files
+            For j = 0 To 19
+                If Instr(a.NAME, bsc_(j)) > 0 Or Instr(a.NAME, bsc_txt(j)) > 0 Or Instr(a.NAME, b_(j)) > 0 Or Instr(a.NAME, b_txt(j)) > 0 Or Instr(a.NAME, bsc2_(j)) > 0 Or Instr(a.NAME, bsc2_txt(j)) > 0 Or Instr(a.NAME, b2_(j)) > 0 Or Instr(a.NAME, b2_txt(j)) > 0 Then '筛选出8个条件的脚本
+                    If Instr(a.NAME, " CDX")=0 and Instr(a.NAME, ".txt")>0 Then '过滤掉CDX脚本,并再次筛选txt,TXT文件
+                        file_name(i) = a.NAME
+                        bsc(i)=j+1
+                        i=i+1
+                        Exit For                            	
+                    End If
+                End If
+            Next
+        Next
+        bsc_ub = i - 1
+        TracePrint "检测到"&i&"个脚本。"    
+        If bsc_ub = -1 Then 
+            MessageBox "没有可运行的脚本"
+            EndScript 
+        End If
+    Else  
+        onei=0  //单脚本检查设定目录下有多少脚本文件
+        For Each a In oF.Files
+            If Instr(a.NAME, ".txt") Then             
+                TracePrint a.NAME
+                bat_name_one = a.NAME
+                onei = onei + 1
+            End If 
+        Next
+        
+        If onei <> 1 Then 
+            MessageBox "检测到" & onei & "个脚本。设定路径请放置一个脚本！"
+            EndScript     
+        End If
+    End If 
+    //---------------------------------------------------------------------------------        
+        
+    If zx_yx = 1 Then '1表示跑脚本
+        
+        If 文件夹 = Form1.download_path.Path Then 
+            If instr(date,"-") > 0 then
+                cdx_path = 文件夹 & "\" & Replace(date, "-", "") & Replace(Right(time, 8), ":", "") & " CDX"
+            Elseif instr(date,"/") > 0 then
+                cdx_path = 文件夹 & "\" & Replace(date, "/", "") & Replace(Right(time, 8), ":", "") & " CDX"
+            Else 
+                MessageBox "重定向文件夹命名错误"
+            End if
+            Call Plugin.File.CreateFolder(cdx_path)
+        Else 
+            cdx_path =文件夹
+        End If
+                 
+        If Form1.CheckBox_allrun.Value Then 
+            If Form1.CheckBox_scnomove.Value = 0 Then
+                Call Plugin.File.MoveFile(文件夹 & "\" & bat_name_one, cdx_path & "\" & bat_name_one)
+            End If 
+        Else 
+            For k = 0 To bsc_ub
+                TracePrint "当前符合条件的文件：" & file_name(k)
+                Call Plugin.File.MoveFile(文件夹 & "\" & file_name(k), cdx_path & "\" & file_name(k))   
+            Next
+        End If 
+    
+    ElseIf zx_yx = 0 Then '0表示自动选择脚本
+        For k = 0 To bsc_ub
+            TracePrint "当前符合条件的文件：" & file_name(k)
+            Select Case bsc(k)
+            Case 1
+                Form1.CheckBox1.Value=1
+            Case 2
+                Form1.CheckBox2.Value=1
+            Case 3
+                Form1.CheckBox3.Value=1
+            Case 4
+                Form1.CheckBox4.Value=1
+            Case 5
+                Form1.CheckBox5.Value=1
+            Case 6
+                Form1.CheckBox6.Value=1
+            Case 7
+                Form1.CheckBox7.Value=1
+            Case 8
+                Form1.CheckBox8.Value=1
+            Case 9
+                Form1.CheckBox9.Value=1
+            Case 10
+                Form1.CheckBox10.Value=1
+            Case 11
+                Form1.CheckBox11.Value=1
+            Case 12
+                Form1.CheckBox12.Value=1
+            Case 13
+                Form1.CheckBox13.Value=1
+            Case 14
+                Form1.CheckBox14.Value=1
+            Case 15
+                Form1.CheckBox15.Value=1
+            Case 16
+                Form1.CheckBox16.Value=1
+            Case 17
+                Form1.CheckBox17.Value=1
+            Case 18
+                Form1.CheckBox18.Value=1
+            Case 19
+                Form1.CheckBox19.Value=1
+            Case 20
+                Form1.CheckBox20.Value=1
+            End Select
+        Next
+    End If
+
+End Sub
+
+Event Form1.instructions_button.Click
+    MessageBox "n为bsc编号，BSC\B\bsc\b后面接n,n后面接（.txt）或（_）。正确命名（bsc1.txt\B15_广州东站.txt）。错误命名（bsc1广州东站.txt\B15-.txt）"
+End Event
+
+Event Form1.CheckBox_nadmin.Click
+    If Form1.CheckBox_nadmin.Value Then 
+        Form1.CheckBox_admin.Value = 0
+    Else 
+        Form1.CheckBox_admin.Value = 1
+    End If
+End Event
+
+Event Form1.CheckBox_admin.Click
+
+    If Form1.CheckBox_admin.Value Then 
+        Form1.CheckBox_nadmin.Value = 0
+    Else 
+        Form1.CheckBox_nadmin.Value = 1
+    End If
+
+End Event
+
+Event Form1.Label5.Click
+    msgbx = "密码为连续密码，1、如果第一个密码为xxxx01，其中01为bsc编号，则把01前面的字符xxxx设置进去就可以了。"
+    msgbx = msgbx & vbcrlf & "		2、如果第一个密码为xxxx1，其中1为bsc编号，则把1前面的字符xxxx设置进去就可以了。"
+    msgbx = msgbx & vbcrlf & "		3、如果bsc编码前面含0则在“含0”前打钩"
+    MessageBox  msgbx
+End Event
+
+Event Form1.CheckBox_allrun.Click
+    If Form1.CheckBox_allrun.Value Then 
+        //Call AllChoose()
+        Form1.CheckBox21.Value = 1
+        Form1.CheckBox_changepsw.Value = 0
+    Else 
+        Call AllClear()
+        Form1.CheckBox21.Value = 0
+    End If
+    
+End Event
+
+Dim arr_psw
+    
+// Dim arr_bscid   
+Sub ChangeThePsw_ChooseBSC()
+    //	City = Split(form1.ComboBox2.List, "|")(form1.ComboBox2.listindex)
+    Dim arr_bscid(19)
+    //Dim arr_bscid
+    //地市-BSCID-账号-旧密码-新密码
+    Dim bscn,str
+    bscn=0
+    For pn = 2 To 1000
+        str = Lib.文件.读取指定行文本内容(Form1.BrowseBox2.Path, pn)
+        TracePrint str
+        If Len(str) <5 Then 
+            Exit For 
+        End If
+        arr_psw = Split(str, "-")
+        TracePrint arr_psw(1)
+        If arr_psw(0) = City Then 
+            arr_bscid(bscn) = arr_psw(1)
+            bscn=bscn+1
+        End If
+    Next
+
+    For k = 0 To bscn - 1
+        TracePrint arr_bscid(k)
+        bn=arr_bscid(k)\1
+        Select Case bn
+        Case 1
+            Form1.CheckBox1.Value = 1
+        Case 2
+            Form1.CheckBox2.Value=1
+        Case 3
+            Form1.CheckBox3.Value=1
+        Case 4
+            Form1.CheckBox4.Value=1
+        Case 5
+            Form1.CheckBox5.Value=1
+        Case 6
+            Form1.CheckBox6.Value=1
+        Case 7
+            Form1.CheckBox7.Value=1
+        Case 8
+            Form1.CheckBox8.Value=1
+        Case 9
+            Form1.CheckBox9.Value=1
+        Case 10
+            Form1.CheckBox10.Value=1
+        Case 11
+            Form1.CheckBox11.Value=1
+        Case 12
+            Form1.CheckBox12.Value=1
+        Case 13
+            Form1.CheckBox13.Value=1
+        Case 14
+            Form1.CheckBox14.Value=1
+        Case 15
+            Form1.CheckBox15.Value=1
+        Case 16
+            Form1.CheckBox16.Value=1
+        Case 17
+            Form1.CheckBox17.Value=1
+        Case 18
+            Form1.CheckBox18.Value=1
+        Case 19
+            Form1.CheckBox19.Value=1
+        Case 20
+            Form1.CheckBox20.Value=1
+        End Select
+    Next 
+End Sub
+Event Form1.CheckBox_changepsw.Click
+    If Form1.CheckBox_changepsw.Value Then 
+        Form1.BrowseBox1.Visible = False
+        Form1.BrowseBox2.Visible = True
+        Form1.CheckBox21.Value = 0
+        Form1.CheckBox_allrun.Value = 0
+        Form1.CheckBox_scnomove.Value = 0                
+    Else 
+        Form1.BrowseBox1.Visible = True
+        Form1.BrowseBox2.Visible = False      
+    End If
+End Event
+
+Event Form1.xp.Click
+    If Form1.xp.Value Then 
+        Form1.xp2.Value = 0
+        Form1.win7_1440.Value = 0
+        Form1.win7_1600.Value = 0
+    End If
+End Event
+
+Event Form1.xp2.Click
+    If Form1.xp2.Value Then 
+        Form1.xp.Value = 0
+        Form1.win7_1440.Value = 0
+        Form1.win7_1600.Value = 0
+    End If
+End Event
+
+Event Form1.win7_1440.Click
+    If Form1.win7_1440.Value Then 
+        Form1.xp.Value = 0
+        Form1.xp2.Value = 0
+        Form1.win7_1600.Value = 0
+    End If
+End Event
+
+Event Form1.win7_1600.Click
+    If Form1.win7_1600.Value Then 
+        Form1.xp.Value = 0
+        Form1.xp2.Value = 0
+        Form1.win7_1440.Value = 0
+    End If
+End Event
